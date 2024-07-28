@@ -20,11 +20,6 @@ interface ApiResponse<T> {
   pagesCount: number;
 }
 
-type GalleryStoreType = {
-  albums: Album[];
-  currentImage: string | null;
-};
-
 class GalleryStore {
   albums: Album[] = [];
   currentAlbumsPage: number = 1;
@@ -50,15 +45,13 @@ class GalleryStore {
         this.error = '';
       });
       const response = await fetch(
-        `${BASE_URL}/items/album?limit=${ALBUMS_PER_PAGE}&offset=${
-          (this.currentAlbumsPage - 1) * ALBUMS_PER_PAGE
-        }`
+        `${BASE_URL}/items/album?limit=${ALBUMS_PER_PAGE}&offset=${this.calcAlbumsOffset()}`
       );
       const data: ApiResponse<Album> = await response.json();
       runInAction(() => {
         this.albums = data.data;
       });
-      this.fetchImagesCountForAlbums();
+      await this.fetchImagesCountForAlbums();
     } catch (error) {
       runInAction(() => {
         this.error = 'Возникла ошибка при загрузке альбомов.';
@@ -84,12 +77,13 @@ class GalleryStore {
 
   fetchImagesCountForAlbums = async () => {
     try {
-      this.albums.forEach(async (album) => {
-        const imagesCount = await this.getImagesCountByAlbumId(album.id);
-        runInAction(() => {
-          album.imgCount = Number(imagesCount);
-        });
-      });
+      return await Promise.all(this.albums.map((album: Album) => {
+        return this.getImagesCountByAlbumId(album.id).then(imagesCount => {
+          runInAction(() => {
+            album.imgCount = Number(imagesCount);
+          });
+        })
+      }))
     } catch (error) {
       console.error('Ошибка при получении количества изображений в альбомах:', error);
     }
@@ -125,9 +119,7 @@ class GalleryStore {
         this.error = '';
       });
       const response = await fetch(
-        `${BASE_URL}/items/image?filter[album_id][_eq]=${
-          this.currentAlbum
-        }&limit=${IMAGES_PER_PAGE}&offset=${(this.currentImagesPage - 1) * IMAGES_PER_PAGE}`
+        `${BASE_URL}/items/image?filter[album_id][_eq]=${this.currentAlbum}&limit=${IMAGES_PER_PAGE}&offset=${this.calcImagesOffset()}`
       );
       const data = await response.json();
       runInAction(() => {
@@ -169,7 +161,7 @@ class GalleryStore {
   };
 
   getNextImage = async (currentIndex: number) => {
-    if (currentIndex === this.images.length - 1) {
+    if (currentIndex >= this.images.length - 1) {
       runInAction(() => {
         this.setCurrentImagesPage(this.currentImagesPage + 1);
       });
@@ -180,7 +172,7 @@ class GalleryStore {
   };
 
   getPrevImage = async (currentIndex: number) => {
-    if (currentIndex === 0) {
+    if (currentIndex <= 0) {
       runInAction(() => {
         this.setCurrentImagesPage(this.currentImagesPage - 1);
       });
@@ -189,6 +181,16 @@ class GalleryStore {
     }
     return this.images[currentIndex - 1].image;
   };
+
+  calcAlbumsOffset(): number {
+    const offset = (this.currentAlbumsPage - 1) * ALBUMS_PER_PAGE;
+    return Math.max(0, Math.min(offset, ALBUMS_PER_PAGE));
+  }
+
+  calcImagesOffset(): number {
+    const offset = (this.currentImagesPage - 1) * IMAGES_PER_PAGE;
+    return Math.max(0, Math.min(offset, IMAGES_PER_PAGE));
+  }
 }
 
 const galleryStore = new GalleryStore();

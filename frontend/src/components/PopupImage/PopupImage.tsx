@@ -2,7 +2,6 @@ import './PopupImage.scss';
 import { useParams, useNavigate, Outlet } from 'react-router-dom';
 import Popup from '../Popup/Popup';
 import { observer } from 'mobx-react-lite';
-import { toJS } from 'mobx';
 import galleryStore from '../../stores/galleryStore';
 import { BASE_URL, IMAGES_PER_PAGE } from '../../constants';
 import { getScrollBarWidth } from '../../utils';
