@@ -4,6 +4,10 @@ Frontend: TypeScript, React, SCSS, MobX, Webpack
 
 Backend: directus, SQLite 
 
+Proxy: Nginx
+
+Docker
+
 ## Инструкция по установке
 
 1. Клонировать репозиторий `git clone https://github.com/MilanaKard/photo-gallery.git`
