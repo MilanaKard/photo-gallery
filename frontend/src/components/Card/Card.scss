@@ -1,0 +1,31 @@
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  background-color: #ffffff;
+  width: 100%;
+  border-radius: 1.3rem;
+  box-shadow: 0 2rem 4rem -1.4rem rgba(0, 0, 0, 0.25);
+  transition: 0.5s;
+
+  .card-img {
+    max-width: 100%;
+    display: block;
+    height: auto;
+    border-radius: 1.3rem;
+    opacity: 0.9;
+    transform: scale(0.95);
+    transition: 0.5s;
+  }
+}
+
+@media (hover: hover) {
+  .card:hover {
+    cursor: pointer;
+    .card-img {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

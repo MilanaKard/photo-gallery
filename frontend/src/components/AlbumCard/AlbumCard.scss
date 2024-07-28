@@ -1,0 +1,14 @@
+.album-card__info {
+  font-size: 1.8rem;
+  margin: 1rem 0 0;
+}
+
+@media (hover: hover) {
+  .album-card:hover {
+    cursor: pointer;
+    .card .card-img {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

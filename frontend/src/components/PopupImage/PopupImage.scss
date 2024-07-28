@@ -1,0 +1,38 @@
+@import '../../styles/constants';
+
+.popup__image {
+  max-width: calc(100vw - 12rem);
+  max-height: calc(100vh - 16rem);
+}
+
+.popup__panel {
+  position: absolute;
+  display: flex;
+  column-gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  bottom: 0;
+  right: 7rem;
+}
+
+.popup__button {
+  display: inline-block;
+  font-size: 5rem;
+  color: $primary-color;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: 0.5s;
+
+  &.disabled {
+    pointer-events: none;
+    color: grey;
+  }
+}
+
+@media (hover: hover) {
+  .popup__button:hover {
+    color: $link-hover-color;
+  }
+}

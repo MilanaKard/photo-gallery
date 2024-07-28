@@ -1,0 +1,44 @@
+@import '../../styles/constants';
+
+.header {
+  width: 100%;
+  box-shadow: 0 2px 1.5rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.header__container {
+  display: flex;
+  align-items: center;
+  padding: 0 3rem;
+}
+
+.header__logo {
+  display: flex;
+  transition: 0.5s;
+}
+
+.header__image {
+  width: 8rem;
+  height: 8rem;
+  margin-right: 1rem;
+  background-image: url('/src/assets/svg/logo.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: 0.5s;
+}
+
+.header__text {
+  font-size: 2rem;
+  line-height: 8rem;
+  color: $dark-color;
+}
+
+.header__logo:active {
+  filter: invert(50%);
+}
+
+@media (hover: hover) {
+  .header__logo:hover {
+    filter: invert(30%);
+  }
+}
