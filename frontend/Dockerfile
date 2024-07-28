@@ -14,10 +14,10 @@ RUN npm install
 COPY . .
 
 # Build the app
-RUN npm run build
+RUN npx webpack --mode=production --env port=3000
 
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Start the app
-CMD ["npm", "start"]
+CMD ["npx", "webpack", "serve", "--mode=production", "--env", "port=3000"]
