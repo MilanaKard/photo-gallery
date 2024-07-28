@@ -33,6 +33,22 @@ const PopupImage: React.FC = observer(() => {
     setCurrentIndex(images.findIndex((image) => image.image === imageId));
   }, [imageId, images]);
 
+      // Handle keyboard input
+      useEffect(() => {
+        const handleKeyDown = (event: any) => {
+          if (event.key === 'ArrowRight') {
+            handleNextImageClick();
+          } else if (event.key === 'ArrowLeft') {
+            handlePrevImageClick();
+          }
+        };
+    
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+          window.removeEventListener('keydown', handleKeyDown);
+        };
+      }, [currentIndex, images.length]);
+
   const onClosePopup = () => {
     setIsPopupvisible(false);
     setTimeout(() => {
